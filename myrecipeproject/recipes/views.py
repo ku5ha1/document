@@ -28,4 +28,19 @@ class RecipeDetail(APIView):
             raise Http404
         
     def get(self, request, pk):
-        pass
+        recipe = self.get_object(pk)
+        serializer = RecipeSerializer(recipe)
+        return Response(serializer.data)
+    
+    def put(self, request, pk):
+        recipe = self.get_object(pk)
+        serializer = RecipeSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_202_ACCEPTED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+    def delete(self, request, pk):
+        recipe = self.get_object(pk)
+        recipe.delete()
+        return Response(status=status.HTTP_200_OK)
