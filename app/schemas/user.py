@@ -11,3 +11,14 @@ class UserResponse(BaseModel):
     username: str 
     email: str 
     created_at: datetime
+
+class UserLogin(BaseModel):
+    username: str 
+    password: str
+
+class UserOut(BaseModel):
+    id: int 
+    created_at: datetime
+
+    class Config:
+        orm_mode = True
