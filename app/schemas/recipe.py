@@ -19,6 +19,6 @@ class RecipeOut(BaseModel):
 
     class Config:
         from_attributes = True 
-
+    
 class RecipeOwner(RecipeOut):
     owner: Optional[dict] = None
