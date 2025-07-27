@@ -1,10 +1,12 @@
 from fastapi import FastAPI  
 from app.utils.database import Base, get_db, engine
 from app.routes.user import router as user_router
+from app.routes.recipe import router as recipe_router
 
 app = FastAPI()
 
 app.include_router(user_router)
+app.include_router(recipe_router)
 
 def init_db():
     Base.metadata.create_all(bind=engine)
