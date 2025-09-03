@@ -3,6 +3,7 @@ from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles 
 import os, uuid
 from app.utils.pdf_loader import extract_and_save_text
+from app.utils.vector_store import split_text_into_chunks, create_vector_store
  
 app = FastAPI()
 
