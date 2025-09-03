@@ -4,3 +4,7 @@ jinja2
 python-multipart
 python-dotenv
 pypdf
+langchain
+faiss-cpu
+langchain[google-genai]
+langchain_community
