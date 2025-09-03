@@ -1,0 +1,62 @@
+/* Import Orbitron font */
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&display=swap');
+
+:root {
+    --bg-dark: #0a0a0a;
+    --bg-card: #111827;
+    --primary-red: #ef4444;
+    --primary-red-dark: #dc2626;
+    --accent-red: #f87171;
+    --text-light: #f3f4f6;
+    --text-muted: #9ca3af;
+    --border-color: #374151;
+}
+
+/* Apply Orbitron font to specific elements */
+.logo-font {
+    font-family: "Orbitron", sans-serif;
+}
+
+.heading-font {
+    font-family: "Orbitron", sans-serif;
+}
+
+/* Custom animations */
+@keyframes pulse-glow {
+    0%, 100% { box-shadow: 0 0 5px rgba(239, 68, 68, 0.5); }
+    50% { box-shadow: 0 0 20px rgba(239, 68, 68, 0.8); }
+}
+
+.pulse-glow {
+    animation: pulse-glow 2s infinite;
+}
+
+/* Custom styles for the upload area */
+.upload-area {
+    transition: all 0.3s ease;
+}
+
+.upload-area:hover {
+    transform: translateY(-2px);
+    border-color: var(--primary-red);
+}
+
+/* Gradient text */
+.gradient-text {
+    background: linear-gradient(90deg, #ef4444, #f87171);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* Button styles */
+.btn-primary {
+    background: linear-gradient(90deg, #ef4444, #dc2626);
+    transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+    background: linear-gradient(90deg, #dc2626, #ef4444);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+}
