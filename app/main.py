@@ -2,6 +2,7 @@ from fastapi import FastAPI, Request, UploadFile, HTTPException
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles 
 import os, uuid
+from app.utils.pdf_loader import extract_and_save_text
  
 app = FastAPI()
 
@@ -46,10 +47,11 @@ async def upload_file(request: Request, file: UploadFile):
 
     unique_filename = f"{uuid.uuid4()}.pdf"
     file_path = os.path.join(UPLOAD_FOLDER, unique_filename)
-
+    
     try:
         with open(file_path, "wb") as f:
             f.write(await file.read())
+        extracted_text = extract_and_save_text(file_path)
 
         return TEMPLATES.TemplateResponse(
             "home.html",
