@@ -71,3 +71,18 @@ async def upload_file(request: Request, file: UploadFile):
             },
             status_code=500
         )
+    
+@app.post('/ask')
+async def ask_question(question: str):
+    question = question 
+    processed_dir = "data/processed"
+    txt_files = [os.path.join(processed_dir, f) for f in os.listdir(processed_dir) if f.endswith(".txt")]
+    latest_file = max(txt_files, key=os.path.getctime)
+
+    with open(latest_file, "r", encoding="utf-8") as f:
+        text = f.read()
+    chunks = split_text_into_chunks(text)
+    store = create_vector_store(chunks=chunks)
+    res = store.similarity_search(question, k=2)
+            
+    return {"matches": [doc.page_content for doc in res]}
