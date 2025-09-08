@@ -17,7 +17,7 @@ def split_text_into_chunks(text: str) -> list[str]:
     return splitter.split_text(text)
 
 def create_vector_store(chunks: list[str]):
-    embeddings = GoogleGenerativeAIEmbeddings(model="models/embedding-001")
+    embeddings = GoogleGenerativeAIEmbeddings(model="models/gemini-embedding-001")
     vector_store = FAISS.from_texts(chunks, embedding=embeddings)
     return vector_store
 
