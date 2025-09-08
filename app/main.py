@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Request, UploadFile, HTTPException
+from fastapi import FastAPI, Request, UploadFile, HTTPException, Form
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles 
 import os, uuid
@@ -78,38 +78,48 @@ async def upload_file(request: Request, file: UploadFile):
             status_code=500
         )
     
-@app.post('/ask')
-async def ask_question(question: str):
-    question = question 
+@app.post("/ask")
+async def ask_question(request: Request, question: str = Form(...)):
     processed_dir = "data/processed"
     txt_files = [os.path.join(processed_dir, f) for f in os.listdir(processed_dir) if f.endswith(".txt")]
     latest_file = max(txt_files, key=os.path.getctime)
 
     with open(latest_file, "r", encoding="utf-8") as f:
         text = f.read()
+
     chunks = split_text_into_chunks(text)
     store = create_vector_store(chunks=chunks)
     res = store.similarity_search(question, k=2)
-            
+
     context = "\n\n".join([doc.page_content for doc in res])
     
     prompt = f"""
-    Based on the following context - answer this question thouroughly and accurately. 
-    
+    Based on the following context - answer this question thoroughly and accurately. 
+
     Context: {context} 
     Question: {question}
     Answer:     
     """
-    
-    try: 
+
+    try:
         llm = ChatGoogleGenerativeAI(model="gemini-1.5-flash", temperature=0)
         answer = llm.invoke(prompt)
-        return {
-            "question" : question,
-            "answer": answer.content    
-                }
+
+        return TEMPLATES.TemplateResponse(
+            "home.html",
+            {
+                "request": request,
+                "answer": answer.content,
+                "message": None
+            }
+        )
     except Exception as e:
-        raise HTTPException(
-            status_code=404,
-            detail="Could not generate response. Try again later."
+        return TEMPLATES.TemplateResponse(
+            "home.html",
+            {
+                "request": request,
+                "answer": None,
+                "message": f"Error: {str(e)}",
+                "message_type": "error"
+            }
         )
