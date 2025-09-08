@@ -5,11 +5,12 @@ import os, uuid
 from app.utils.pdf_loader import extract_and_save_text
 from app.utils.vector_store import split_text_into_chunks, create_vector_store
 from dotenv import load_dotenv
+from langchain_google_genai import ChatGoogleGenerativeAI
 
 load_dotenv()
 
 GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
- 
+    
 app = FastAPI()
 
 app.mount("/static", StaticFiles(directory="static"), name="static")
@@ -101,6 +102,14 @@ async def ask_question(question: str):
     """
     
     try: 
-        pass 
+        llm = ChatGoogleGenerativeAI(model="gemini-1.5-flash", temperature=0)
+        answer = llm.invoke(prompt)
+        return {
+            "question" : question,
+            "answer": answer.content    
+                }
     except Exception as e:
-        pass
+        raise HTTPException(
+            status_code=404,
+            detail="Could not generate response. Try again later."
+        )
