@@ -4,6 +4,11 @@ from fastapi.staticfiles import StaticFiles
 import os, uuid
 from app.utils.pdf_loader import extract_and_save_text
 from app.utils.vector_store import split_text_into_chunks, create_vector_store
+from dotenv import load_dotenv
+
+load_dotenv()
+
+GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
  
 app = FastAPI()
 
@@ -85,4 +90,17 @@ async def ask_question(question: str):
     store = create_vector_store(chunks=chunks)
     res = store.similarity_search(question, k=2)
             
-    return {"matches": [doc.page_content for doc in res]}
+    context = "\n\n".join([doc.page_content for doc in res])
+    
+    prompt = f"""
+    Based on the following context - answer this question thouroughly and accurately. 
+    
+    Context: {context} 
+    Question: {question}
+    Answer:     
+    """
+    
+    try: 
+        pass 
+    except Exception as e:
+        pass

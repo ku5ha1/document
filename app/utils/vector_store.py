@@ -24,8 +24,8 @@ def create_vector_store(chunks: list[str]):
 # def test_function():
 #     with open('data/processed/c791192d-a142-4a73-a4de-90b557611fbf.txt', "r", encoding="utf-8") as F:
 #         text = F.read()
-#         chunks = split_text_into_chunks(text)
-#         store = create_vector_store(chunks=chunks)
+        # chunks = split_text_into_chunks(text)
+        # store = create_vector_store(chunks=chunks)
 #         res = store.similarity_search('Role of a QA Vendor in the scope?', k=2)
 #         print(res)
         
